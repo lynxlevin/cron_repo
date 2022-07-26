@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/lynxlevin/cron_repo#readme",
   "dependencies": {
-    "axios": "^0.27.2",
-    "dotenv": "^16.0.1",
-    "jsdom": "^20.0.0"
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "jsdom": "^16.7.0"
   }
 }
