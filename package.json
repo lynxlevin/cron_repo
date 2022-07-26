@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/lynxlevin/cron_repo/issues"
   },
-  "homepage": "https://github.com/lynxlevin/cron_repo#readme"
+  "homepage": "https://github.com/lynxlevin/cron_repo#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "jsdom": "^20.0.0"
+  }
 }
