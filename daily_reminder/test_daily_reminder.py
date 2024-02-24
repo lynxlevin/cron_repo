@@ -1,8 +1,8 @@
 import unittest
-from calendar import Calendar
 from unittest import mock
 
 from index import DailyReminder
+from mod_datetime import ModDatetime
 
 
 class TestDailyReminder(unittest.TestCase):
@@ -11,7 +11,9 @@ class TestDailyReminder(unittest.TestCase):
         result = daily_reminder.exec()
         self.assertEqual([], result)
 
-    def test_exec__trash_reminder(self):
+    @mock.patch("slack_messenger.SlackMessenger.send_message")
+    @mock.patch("mod_datetime.ModDatetime.today")
+    def test_exec__trash_reminder(self, mod_datetime_mock, messenger_mock):
         def get_expected(day):
             suffix = "の日です。"
             if day in [3, 6, 10, 13, 17, 20, 24, 27, 31]:
@@ -30,15 +32,18 @@ class TestDailyReminder(unittest.TestCase):
 
         for i in range(1, 32):
             with self.subTest(case=f"2025/03/{i}: {get_expected(i)}"):
-                with mock.patch(
-                    "calendar.Calendar.today", return_value=Calendar(2025, 3, i)
-                ):
-                    daily_reminder = DailyReminder()
-                    daily_reminder.exec(trash_schedule=True)
-                    self.assertEqual([get_expected(i)], daily_reminder.messages)
+                mod_datetime_mock.return_value = ModDatetime(2025, 3, i)
+                daily_reminder = DailyReminder()
+                daily_reminder.exec(trash_schedule=True)
+
+                expected = get_expected(i)
+                self.assertEqual([expected], daily_reminder.messages)
+                if expected is not None:
+                    messenger_mock.assert_called_once_with("url", {"text": expected})
+                messenger_mock.reset_mock()
 
 
-class TestCalendar(unittest.TestCase):
+class TestModDatetime(unittest.TestCase):
     def test_nth_week(self):
         cases = [
             {"day": 2, "nth_week": 1},
@@ -57,8 +62,8 @@ class TestCalendar(unittest.TestCase):
             nth_week = case["nth_week"]
 
             with self.subTest(case=f"2024/1/{day}"):
-                calendar = Calendar(year=2024, month=1, day=day)
-                result = calendar.nth_week()
+                mod_date = ModDatetime(year=2024, month=1, day=day)
+                result = mod_date.nth_week()
                 self.assertEqual(nth_week, result)
 
 

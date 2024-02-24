@@ -1,11 +1,14 @@
 import argparse
-from calendar import Calendar
 from typing import Optional
+
+from mod_datetime import ModDatetime
+from slack_messenger import SlackMessenger
 
 
 class DailyReminder:
     def __init__(cls):
         cls.messages = []
+        cls.messenger = SlackMessenger()
 
     def exec(self, trash_schedule=False) -> list[Optional[str]]:
         results = []
@@ -13,11 +16,15 @@ class DailyReminder:
         if trash_schedule:
             self.messages.append(self._get_trash_schedule())
 
+        for message in self.messages:
+            if message is not None:
+                self.messenger.send_message("url", {"text": message})
+
         return results
 
     def _get_trash_schedule(self) -> Optional[str]:
         suffix = "の日です。"
-        today = Calendar.today()
+        today = ModDatetime.today()
         weekday = today.weekday()
         week_number = today.nth_week()
 

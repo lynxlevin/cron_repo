@@ -4,7 +4,7 @@ import requests
 
 
 class SlackMessenger:
-    def send_message(self, url: str, message_dict: str):
+    def send_message(self, url: str, message_dict: dict):
         header = {"Content-type": "application/json"}
         connect_timeout = 5.0
         read_timeout = 30.0
