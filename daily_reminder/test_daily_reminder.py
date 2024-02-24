@@ -19,7 +19,7 @@ class TestDailyReminder(unittest.TestCase):
             "REMINDER_SLACKTOKEN": "dummy_token",
         },
     )
-    @mock.patch("mod_datetime.ModDatetime.today")
+    @mock.patch("mod_datetime.ModDatetime.now")
     def test_exec__trash_reminder(self, mod_datetime_mock, messenger_mock):
         def get_expected(day):
             suffix = "の日です。"

@@ -1,5 +1,6 @@
 import argparse
 import os
+from datetime import timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -32,7 +33,8 @@ class DailyReminder:
 
     def _get_trash_schedule(self) -> Optional[str]:
         suffix = "の日です。"
-        today = ModDatetime.today()
+        JST = timezone(timedelta(hours=+9), "JST")
+        today = ModDatetime.now(JST)
         weekday = today.weekday()
         week_number = today.nth_week()
 
