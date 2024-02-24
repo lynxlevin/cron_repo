@@ -1,34 +1,40 @@
 import argparse
 from calendar import Calendar
+from typing import Optional
 
 
 class DailyReminder:
-    def exec(self, trash_schedule=False):
-        results = []
-        if trash_schedule:
-            results.append(self._get_trash_schedule())
+    def __init__(cls):
+        cls.messages = []
 
-        if len(results) == 0:
-            return "no_exc"
+    def exec(self, trash_schedule=False) -> list[Optional[str]]:
+        results = []
+
+        if trash_schedule:
+            self.messages.append(self._get_trash_schedule())
+
         return results
 
-    def _get_trash_schedule(self):
+    def _get_trash_schedule(self) -> Optional[str]:
+        suffix = "の日です。"
         today = Calendar.today()
+        weekday = today.weekday()
+        week_number = today.nth_week()
 
-        if today.weekday() in [0, 3]:
-            return "燃やすゴミ"
-        elif today.weekday() == 4:
-            return "プラスチック"
-        elif today.weekday() == 1:
-            if today.nth_week() in [1, 3]:
-                return "紙布"
-            elif today.nth_week() in [2, 4]:
-                return "ペットボトル"
-        elif today.weekday() == 2:
-            if today.nth_week() in [1, 3]:
-                return "缶瓶"
-            elif today.nth_week() in [2, 4]:
-                return "小型不燃"
+        if weekday in [0, 3]:
+            return f"燃やすゴミ{suffix}"
+        elif weekday == 4:
+            return f"プラスチック{suffix}"
+        elif weekday == 1:
+            if week_number in [1, 3]:
+                return f"紙布{suffix}"
+            elif week_number in [2, 4]:
+                return f"ペットボトル{suffix}"
+        elif weekday == 2:
+            if week_number in [1, 3]:
+                return f"缶瓶{suffix}"
+            elif week_number in [2, 4]:
+                return f"小型不燃{suffix}"
 
         return None
 

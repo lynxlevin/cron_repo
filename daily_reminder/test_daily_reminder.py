@@ -9,41 +9,33 @@ class TestDailyReminder(unittest.TestCase):
     def test_exec__no_arg(self):
         daily_reminder = DailyReminder()
         result = daily_reminder.exec()
-        self.assertEqual("no_exc", result)
+        self.assertEqual([], result)
 
     def test_exec__trash_reminder(self):
-        expected = {
-            3: "燃やすゴミ",
-            4: "紙布",
-            5: "缶瓶",
-            6: "燃やすゴミ",
-            7: "プラスチック",
-            10: "燃やすゴミ",
-            11: "ペットボトル",
-            12: "小型不燃",
-            13: "燃やすゴミ",
-            14: "プラスチック",
-            17: "燃やすゴミ",
-            18: "紙布",
-            19: "缶瓶",
-            20: "燃やすゴミ",
-            21: "プラスチック",
-            24: "燃やすゴミ",
-            25: "ペットボトル",
-            26: "小型不燃",
-            27: "燃やすゴミ",
-            28: "プラスチック",
-            31: "燃やすゴミ",
-        }
+        def get_expected(day):
+            suffix = "の日です。"
+            if day in [3, 6, 10, 13, 17, 20, 24, 27, 31]:
+                return f"燃やすゴミ{suffix}"
+            if day in [4, 18]:
+                return f"紙布{suffix}"
+            if day in [5, 19]:
+                return f"缶瓶{suffix}"
+            if day in [7, 14, 21, 28]:
+                return f"プラスチック{suffix}"
+            if day in [11, 25]:
+                return f"ペットボトル{suffix}"
+            if day in [12, 26]:
+                return f"小型不燃{suffix}"
+            return None
 
         for i in range(1, 32):
-            with self.subTest(case=f"2025/03/{i}: {expected.get(i)}"):
+            with self.subTest(case=f"2025/03/{i}: {get_expected(i)}"):
                 with mock.patch(
                     "calendar.Calendar.today", return_value=Calendar(2025, 3, i)
                 ):
                     daily_reminder = DailyReminder()
-                    result = daily_reminder.exec(trash_schedule=True)
-                    self.assertEqual([expected.get(i)], result)
+                    daily_reminder.exec(trash_schedule=True)
+                    self.assertEqual([get_expected(i)], daily_reminder.messages)
 
 
 class TestCalendar(unittest.TestCase):
