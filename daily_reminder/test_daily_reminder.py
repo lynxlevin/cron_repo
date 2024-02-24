@@ -12,6 +12,13 @@ class TestDailyReminder(unittest.TestCase):
         self.assertEqual([], result)
 
     @mock.patch("slack_messenger.SlackMessenger.send_message")
+    @mock.patch.dict(
+        "os.environ",
+        {
+            "REMINDER_SLACKCHANNEL": "dummy_channel",
+            "REMINDER_SLACKTOKEN": "dummy_token",
+        },
+    )
     @mock.patch("mod_datetime.ModDatetime.today")
     def test_exec__trash_reminder(self, mod_datetime_mock, messenger_mock):
         def get_expected(day):
@@ -39,7 +46,9 @@ class TestDailyReminder(unittest.TestCase):
                 expected = get_expected(i)
                 self.assertEqual([expected], daily_reminder.messages)
                 if expected is not None:
-                    messenger_mock.assert_called_once_with("url", {"text": expected})
+                    messenger_mock.assert_called_once_with(
+                        "dummy_channel", "dummy_token", expected
+                    )
                 messenger_mock.reset_mock()
 
 

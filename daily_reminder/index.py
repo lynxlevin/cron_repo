@@ -1,6 +1,9 @@
 import argparse
+import os
+from pathlib import Path
 from typing import Optional
 
+from dotenv import load_dotenv
 from mod_datetime import ModDatetime
 from slack_messenger import SlackMessenger
 
@@ -10,6 +13,11 @@ class DailyReminder:
         cls.messages = []
         cls.messenger = SlackMessenger()
 
+        dotenv_path = Path(__file__).parent.with_name(".env")
+        load_dotenv(dotenv_path)
+        cls.channel = os.environ.get("REMINDER_SLACKCHANNEL")
+        cls.token = os.environ.get("REMINDER_SLACKTOKEN")
+
     def exec(self, trash_schedule=False) -> list[Optional[str]]:
         results = []
 
@@ -18,7 +26,7 @@ class DailyReminder:
 
         for message in self.messages:
             if message is not None:
-                self.messenger.send_message("url", {"text": message})
+                self.messenger.send_message(self.channel, self.token, message)
 
         return results
 
