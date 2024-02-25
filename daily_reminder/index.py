@@ -42,6 +42,9 @@ class DailyReminder:
             return f"燃やすゴミ{suffix}"
         elif weekday == 4:
             return f"プラスチック{suffix}"
+        elif weekday == 6:
+            if week_number in [1, 3]:
+                return f"紙布{suffix}"
         elif weekday == 1:
             if week_number in [1, 3]:
                 return f"紙布{suffix}"

@@ -25,7 +25,7 @@ class TestDailyReminder(unittest.TestCase):
             suffix = "の日です。"
             if day in [3, 6, 10, 13, 17, 20, 24, 27, 31]:
                 return f"燃やすゴミ{suffix}"
-            if day in [4, 18]:
+            if day in [2, 4, 16, 18]:
                 return f"紙布{suffix}"
             if day in [5, 19]:
                 return f"缶瓶{suffix}"
