@@ -10,7 +10,10 @@ class SlackMessenger:
             "channel": channel,
             "text": text,
         }
-        header = {"Authorization": f"Bearer {token}"}
+        header = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        }
         connect_timeout = 5.0
         read_timeout = 30.0
 
