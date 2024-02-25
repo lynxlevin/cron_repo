@@ -6,8 +6,8 @@ authors = ["lynxlevin <72173230+lynxlevin@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-requests = "^2.31.0"
 python-dotenv = "^1.0.1"
+requests = "^2.28.1"
 
 [tool.poetry.dev-dependencies]
 
