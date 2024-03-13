@@ -38,11 +38,11 @@ class DailyReminder:
         weekday = today.weekday()
         week_number = today.nth_week()
 
-        if weekday in [0, 3]:
-            return f"燃やすゴミ{suffix}"
-        elif weekday == 4:
-            return f"プラスチック{suffix}"
-        elif weekday == 6:
+        # if weekday in [0, 3]:
+        #     return f"燃やすゴミ{suffix}"
+        # elif weekday == 4:
+        #     return f"プラスチック{suffix}"
+        if weekday == 6:
             if week_number in [1, 3]:
                 return f"紙布{suffix}"
         elif weekday == 1:

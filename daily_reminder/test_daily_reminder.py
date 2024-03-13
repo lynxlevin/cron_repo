@@ -23,14 +23,14 @@ class TestDailyReminder(unittest.TestCase):
     def test_exec__trash_reminder(self, mod_datetime_mock, messenger_mock):
         def get_expected(day):
             suffix = "の日です。"
-            if day in [3, 6, 10, 13, 17, 20, 24, 27, 31]:
-                return f"燃やすゴミ{suffix}"
+            # if day in [3, 6, 10, 13, 17, 20, 24, 27, 31]:
+            #     return f"燃やすゴミ{suffix}"
             if day in [2, 4, 16, 18]:
                 return f"紙布{suffix}"
             if day in [5, 19]:
                 return f"缶瓶{suffix}"
-            if day in [7, 14, 21, 28]:
-                return f"プラスチック{suffix}"
+            # if day in [7, 14, 21, 28]:
+            #     return f"プラスチック{suffix}"
             if day in [11, 25]:
                 return f"ペットボトル{suffix}"
             if day in [12, 26]:
